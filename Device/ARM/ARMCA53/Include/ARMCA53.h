@@ -35,16 +35,16 @@ extern "C" {
 
 
 /* --------  Configuration of Core Peripherals  ----------------------------------- */
-#define __CA53_REV                0x0000U   /* Core revision r0p0 */
+#define __CA53_REV                0x0004U   /* Core revision r0p4 */
 #define __CORTEX_A                53        /* Cortex-A53 Core */
-#define __FPU_PRESENT             0U        /* no FPU present */
-#define __FPU_DP                  0U        /* single precision FPU */
-#define __DSP_PRESENT             0U        /* no DSP extension present */
+#define __FPU_PRESENT             1U        /* FPU present */
+#define __FPU_DP                  1U        /* double precision FPU */
+#define __DSP_PRESENT             1U        /* DSP extension present */
 #define __ICACHE_PRESENT          1U        /* Instruction cache present */
 #define __DCACHE_PRESENT          1U        /* Data cache present */
-#define __GIC_PRESENT             0U        /* no GIC present */
+#define __GIC_PRESENT             1U        /* GIC present */
 #define __TIM_PRESENT             0U        /* no TIM present */
-#define __L2C_PRESENT             0U        /* no L2C present */
+#define __L2C_PRESENT             1U        /* L2C present */
 #define __ECC_PRESENT             0U        /* no Memory with Error Correcting Code */
 
 #include "core_ca.h"

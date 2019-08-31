@@ -53,6 +53,20 @@ __RAM_SIZE = 0x00080000;
 __STACK_SIZE = 0x0001D000;
 __HEAP_SIZE  = 0x00000C00;
 
+/*--------------------- EL2 Stack Configuration -------------------------------
+  <h> EL2 Stack Configuration
+    <o0> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+  </h>
+  -----------------------------------------------------------------------------*/
+__EL2_STACK_SIZE = 0x00004000;
+
+/*--------------------- EL3 Stack Configuration -------------------------------
+  <h> EL3 Stack Configuration
+    <o0> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+  </h>
+  -----------------------------------------------------------------------------*/
+__EL3_STACK_SIZE = 0x00004000;
+
 /*
  *-------------------- <<< end of configuration section >>> -------------------
 */
@@ -207,6 +221,12 @@ SECTIONS
 
     QUAD (__StackLimit)
     QUAD ((__StackLimit - __StackTop) / 8)
+    
+    QUAD (__EL2StackLimit)
+    QUAD ((__EL2StackLimit - __EL2StackTop) / 8)
+    
+    QUAD (__EL3StackLimit)
+    QUAD ((__EL3StackLimit - __EL3StackTop) / 8)
 
     __ecc_table_end__ = .;
   } > RAM
@@ -316,7 +336,7 @@ SECTIONS
     __HeapLimit = .;
   } > RAM
 
-  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE) (COPY) :
+  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE - __EL2_STACK_SIZE - __EL3_STACK_SIZE) (COPY) :
   {
     . = ALIGN(8);
     __StackLimit = .;
@@ -324,6 +344,27 @@ SECTIONS
     . = ALIGN(8);
     __StackTop = .;
   } > RAM
+
+  /* Set EL2 stack.  */
+  .el2_stack (ORIGIN(RAM) + LENGTH(RAM) - __EL2_STACK_SIZE - __EL3_STACK_SIZE) (COPY) :
+  {
+    . = ALIGN(8);
+    __EL2StackLimit = .;
+    . = . + __EL2_STACK_SIZE;
+    . = ALIGN(8);
+    __EL2StackTop = .;
+  } > RAM
+  
+  /* Set EL3 stack.  */
+  .el3_stack (ORIGIN(RAM) + LENGTH(RAM) - __EL3_STACK_SIZE) (COPY) :
+  {
+    . = ALIGN(8);
+    __EL3StackLimit = .;
+    . = . + __EL3_STACK_SIZE;
+    . = ALIGN(8);
+    __EL3StackTop = .;
+  } > RAM
+
   PROVIDE(__stack = __StackTop);
 
   /* Check if data + heap + stack exceeds RAM limit */

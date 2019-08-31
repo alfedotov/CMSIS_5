@@ -1,8 +1,8 @@
 /******************************************************************************
  * @file     startup_ARMCA53.c
  * @brief    CMSIS Core Device Startup File for Cortex-A53 Device
- * @version  V1.0.0
- * @date     21. May 2019
+ * @version  V1.0.1
+ * @date     02. September 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2019 Arm Limited. All rights reserved.
@@ -22,6 +22,8 @@
  * limitations under the License.
  */
 
+#define __EARLY_INIT
+
 #if defined (ARMCA53)
   #include "ARMCA53.h"
 #else
@@ -31,7 +33,7 @@
 /*----------------------------------------------------------------------------
   External References
  *----------------------------------------------------------------------------*/
-extern uint32_t __INITIAL_SP;
+
 
 /*----------------------------------------------------------------------------
   Internal References
@@ -39,7 +41,8 @@ extern uint32_t __INITIAL_SP;
 void EL3_Default_Handler(void) __NO_RETURN;
 void EL2_Default_Handler(void) __NO_RETURN;
 void EL1_Default_Handler(void) __NO_RETURN;
-void EL3_Reset_Handler(void) __NAKED_NO_RETURN;
+void EL3_Reset_Handler(void) __NO_RETURN;
+void EL3_Reset_Handler_C(void) __NO_RETURN;
 
 
 /*----------------------------------------------------------------------------
@@ -97,79 +100,96 @@ void Lower_EL1_AArch32_FIQ_Handler    (void) __attribute__ ((weak, alias("EL1_De
 void Lower_EL1_AArch32_SError_Handler (void) __attribute__ ((weak, alias("EL1_Default_Handler")));
 
 
+__ASM("\n .macro ventry label \n .align 7 \n b \\label \n .endm");
+
 /*----------------------------------------------------------------------------
   Exception / Interrupt Vector table
  *----------------------------------------------------------------------------*/
 void __VECTOR_TABLE_ATTRIBUTE __VECTOR_TABLE_EL3(void) {
   __ASM volatile(
-  "B    Current_EL3_SP0_Sync_Handler       \n"
-  "B    Current_EL3_SP0_IRQ_Handler        \n"
-  "B    Current_EL3_SP0_FIQ_Handler        \n"
-  "B    Current_EL3_SP0_SError_Handler     \n"
-  "B    Current_EL3_SPx_Sync_Handler       \n"
-  "B    Current_EL3_SPx_IRQ_Handler        \n"
-  "B    Current_EL3_SPx_FIQ_Handler        \n"
-  "B    Current_EL3_SPx_SError_Handler     \n"
-  "B    Lower_EL3_AArch64_Sync_Handler     \n"
-  "B    Lower_EL3_AArch64_IRQ_Handler      \n"
-  "B    Lower_EL3_AArch64_FIQ_Handler      \n"
-  "B    Lower_EL3_AArch64_SError_Handler   \n"
-  "B    Lower_EL3_AArch32_Sync_Handler     \n"
-  "B    Lower_EL3_AArch32_IRQ_Handler      \n"
-  "B    Lower_EL3_AArch32_FIQ_Handler      \n"
-  "B    Lower_EL3_AArch32_SError_Handler   \n"
+  "ventry Current_EL3_SP0_Sync_Handler     \n"
+  "ventry Current_EL3_SP0_IRQ_Handler      \n"
+  "ventry Current_EL3_SP0_FIQ_Handler      \n"
+  "ventry Current_EL3_SP0_SError_Handler   \n"
+  "ventry Current_EL3_SPx_Sync_Handler     \n"
+  "ventry Current_EL3_SPx_IRQ_Handler      \n"
+  "ventry Current_EL3_SPx_FIQ_Handler      \n"
+  "ventry Current_EL3_SPx_SError_Handler   \n"
+  "ventry Lower_EL3_AArch64_Sync_Handler   \n"
+  "ventry Lower_EL3_AArch64_IRQ_Handler    \n"
+  "ventry Lower_EL3_AArch64_FIQ_Handler    \n"
+  "ventry Lower_EL3_AArch64_SError_Handler \n"
+  "ventry Lower_EL3_AArch32_Sync_Handler   \n"
+  "ventry Lower_EL3_AArch32_IRQ_Handler    \n"
+  "ventry Lower_EL3_AArch32_FIQ_Handler    \n"
+  "ventry Lower_EL3_AArch32_SError_Handler \n"
   );
 }
  
 void __VECTOR_TABLE_ATTRIBUTE __VECTOR_TABLE_EL2(void) {
   __ASM volatile(
-  "B    Current_EL2_SP0_Sync_Handler       \n"
-  "B    Current_EL2_SP0_IRQ_Handler        \n"
-  "B    Current_EL2_SP0_FIQ_Handler        \n"
-  "B    Current_EL2_SP0_SError_Handler     \n"
-  "B    Current_EL2_SPx_Sync_Handler       \n"
-  "B    Current_EL2_SPx_IRQ_Handler        \n"
-  "B    Current_EL2_SPx_FIQ_Handler        \n"
-  "B    Current_EL2_SPx_SError_Handler     \n"
-  "B    Lower_EL2_AArch64_Sync_Handler     \n"
-  "B    Lower_EL2_AArch64_IRQ_Handler      \n"
-  "B    Lower_EL2_AArch64_FIQ_Handler      \n"
-  "B    Lower_EL2_AArch64_SError_Handler   \n"
-  "B    Lower_EL2_AArch32_Sync_Handler     \n"
-  "B    Lower_EL2_AArch32_IRQ_Handler      \n"
-  "B    Lower_EL2_AArch32_FIQ_Handler      \n"
-  "B    Lower_EL2_AArch32_SError_Handler   \n"
+  "ventry Current_EL2_SP0_Sync_Handler     \n"
+  "ventry Current_EL2_SP0_IRQ_Handler      \n"
+  "ventry Current_EL2_SP0_FIQ_Handler      \n"
+  "ventry Current_EL2_SP0_SError_Handler   \n"
+  "ventry Current_EL2_SPx_Sync_Handler     \n"
+  "ventry Current_EL2_SPx_IRQ_Handler      \n"
+  "ventry Current_EL2_SPx_FIQ_Handler      \n"
+  "ventry Current_EL2_SPx_SError_Handler   \n"
+  "ventry Lower_EL2_AArch64_Sync_Handler   \n"
+  "ventry Lower_EL2_AArch64_IRQ_Handler    \n"
+  "ventry Lower_EL2_AArch64_FIQ_Handler    \n"
+  "ventry Lower_EL2_AArch64_SError_Handler \n"
+  "ventry Lower_EL2_AArch32_Sync_Handler   \n"
+  "ventry Lower_EL2_AArch32_IRQ_Handler    \n"
+  "ventry Lower_EL2_AArch32_FIQ_Handler    \n"
+  "ventry Lower_EL2_AArch32_SError_Handler \n"
   );
 }
 
 void __VECTOR_TABLE_ATTRIBUTE __VECTOR_TABLE_EL1(void) {
   __ASM volatile(
-  "B    Current_EL1_SP0_Sync_Handler       \n"
-  "B    Current_EL1_SP0_IRQ_Handler        \n"
-  "B    Current_EL1_SP0_FIQ_Handler        \n"
-  "B    Current_EL1_SP0_SError_Handler     \n"
-  "B    Current_EL1_SPx_Sync_Handler       \n"
-  "B    Current_EL1_SPx_IRQ_Handler        \n"
-  "B    Current_EL1_SPx_FIQ_Handler        \n"
-  "B    Current_EL1_SPx_SError_Handler     \n"
-  "B    Lower_EL1_AArch64_Sync_Handler     \n"
-  "B    Lower_EL1_AArch64_IRQ_Handler      \n"
-  "B    Lower_EL1_AArch64_FIQ_Handler      \n"
-  "B    Lower_EL1_AArch64_SError_Handler   \n"
-  "B    Lower_EL1_AArch32_Sync_Handler     \n"
-  "B    Lower_EL1_AArch32_IRQ_Handler      \n"
-  "B    Lower_EL1_AArch32_FIQ_Handler      \n"
-  "B    Lower_EL1_AArch32_SError_Handler   \n"
+  "ventry Current_EL1_SP0_Sync_Handler     \n"
+  "ventry Current_EL1_SP0_IRQ_Handler      \n"
+  "ventry Current_EL1_SP0_FIQ_Handler      \n"
+  "ventry Current_EL1_SP0_SError_Handler   \n"
+  "ventry Current_EL1_SPx_Sync_Handler     \n"
+  "ventry Current_EL1_SPx_IRQ_Handler      \n"
+  "ventry Current_EL1_SPx_FIQ_Handler      \n"
+  "ventry Current_EL1_SPx_SError_Handler   \n"
+  "ventry Lower_EL1_AArch64_Sync_Handler   \n"
+  "ventry Lower_EL1_AArch64_IRQ_Handler    \n"
+  "ventry Lower_EL1_AArch64_FIQ_Handler    \n"
+  "ventry Lower_EL1_AArch64_SError_Handler \n"
+  "ventry Lower_EL1_AArch32_Sync_Handler   \n"
+  "ventry Lower_EL1_AArch32_IRQ_Handler    \n"
+  "ventry Lower_EL1_AArch32_FIQ_Handler    \n"
+  "ventry Lower_EL1_AArch32_SError_Handler \n"
   );
 }
 
 /*----------------------------------------------------------------------------
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
-void __NAKED_NO_RETURN Reset_Handler(void) {
+__ASM(
+  ".section .startup \n"
+  ".globl Reset_Handler \n"
+  ".type Reset_Handler, %function \n"
+  "Reset_Handler: \n"
 
-  __set_SP((uint64_t)&__INITIAL_SP);
-  __EARLY_INIT();
+  __EARLY_INIT
+
+  "adrp	x0, :pg_hi21:__EL3StackTop \n"
+  "add	x0, x0, :lo12:__EL3StackTop \n"
+  "mov	sp, x0 \n"
+  "b Reset_Handler_C \n"
+);
+
+/*----------------------------------------------------------------------------
+  Reset Handler C version called by "naked" Reset Handler
+ *----------------------------------------------------------------------------*/
+void __NO_RETURN Reset_Handler_C(void) {
+
   SystemInit();                      /* CMSIS System Initialization */
 
   __PROGRAM_START();                 /* Enter PreMain (C library entry point) */
