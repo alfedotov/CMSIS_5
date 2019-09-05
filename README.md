@@ -16,6 +16,8 @@ The following is an list of all CMSIS components that are available.
 |:----------|:--------------------|:-------------|
 |[Core(M)](http://arm-software.github.io/CMSIS_5/Core/html/index.html)  | All Cortex-M, SecurCore | Standardized API for the Cortex-M processor core and peripherals. Includes intrinsic functions for Cortex-M4/M7/M33/M35P SIMD instructions.|
 |[Core(A)](http://arm-software.github.io/CMSIS_5/Core_A/html/index.html)| Cortex-A5/A7/A9 | API and basic run-time system for the Cortex-A5/A7/A9 processor core and peripherals.|
+|[Core(AArch64)](https://developer.arm.com/ip-products/processors/cortex-a/cortex-a53)| Cortex-A53 | API and basic run-time system for the Cortex-A53 processor core and peripherals.|
+|[Core(R)](https://developer.arm.com/ip-products/processors/cortex-r/cortex-r52)| Cortex-R52 | API and basic run-time system for the Cortex-R52 processor core and peripherals.|
 |[Driver](http://arm-software.github.io/CMSIS_5/Driver/html/index.html) | All Cortex-M, SecurCore | Generic peripheral driver interfaces for middleware. Connects microcontroller peripherals with middleware that implements for example communication stacks, file systems, or graphic user interfaces.|
 |[DSP](http://arm-software.github.io/CMSIS_5/DSP/html/index.html)       | All Cortex-M | DSP library collection with over 60 Functions for various data types: fixed-point (fractional q7, q15, q31) and single precision floating-point (32-bit). Implementations optimized for the SIMD instruction set are available for Cortex-M4/M7/M33/M35P.|
 |[NN](http://arm-software.github.io/CMSIS_5/NN/html/index.html)        | All Cortex-M | Collection of efficient neural network kernels developed to maximize the performance and minimize the memory footprint on Cortex-M processor cores.|
@@ -66,6 +68,8 @@ For further details see also the [Slides of the Embedded World CMSIS Partner Mee
 |:-------------------- |:--------------------------------------------------------- |
 | CMSIS/Core           | CMSIS-Core(M) related files (for release)                 |
 | CMSIS/Core_A         | CMSIS-Core(A) related files (for release)                 |
+| CMSIS/Core_AArch64   | CMSIS-Core(AArch64) related files (for release)           |
+| CMSIS/Core_R         | CMSIS-Core(R) related files (for release)                 |
 | CMSIS/CoreValidation | Validation for Core(M) and Core(A) (NOT part of release)  |
 | CMSIS/DAP            | CMSIS-DAP related files and examples                      |
 | CMSIS/Driver         | CMSIS-Driver API headers and template files               |
