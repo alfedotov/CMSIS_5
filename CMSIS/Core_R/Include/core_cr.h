@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     core_cr.h
  * @brief    CMSIS Cortex-R Core Peripheral Access Layer Header File
- * @version  V1.0.0
- * @date     21. May 2019
+ * @version  V1.0.1
+ * @date     09. August 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2019 ARM Limited. All rights reserved.
@@ -165,6 +165,11 @@
   #ifndef __DTCM_PRESENT
     #define __DTCM_PRESENT            0U
     #warning "__DTCM_PRESENT        not defined in device header file; using default!"
+  #endif
+
+  #ifndef __ECC_PRESENT
+    #define __ECC_PRESENT             0U
+    #warning "__ECC_PRESENT not defined in device header file; using default!"
   #endif
 
 #endif

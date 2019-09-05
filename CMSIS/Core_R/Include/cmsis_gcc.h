@@ -2,10 +2,10 @@
  * @file     cmsis_gcc.h
  * @brief    CMSIS compiler GCC header file
  * @version  V1.0.1
- * @date     08. Aug 2019
+ * @date     09. August 2019
  ******************************************************************************/
 /*
- * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
+ * Copyright (c) 2019 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -200,11 +200,11 @@ __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void)
 #endif
 
 #ifndef __INITIAL_SP
-#define __INITIAL_SP              __HypStackTop
+#define __INITIAL_SP              __EL2StackTop
 #endif
 
 #ifndef __STACK_LIMIT
-#define __STACK_LIMIT             __HypStackLimit
+#define __STACK_LIMIT             __EL2StackLimit
 #endif
 
 #ifndef __VECTOR_TABLE_EL2

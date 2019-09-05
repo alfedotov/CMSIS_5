@@ -2,7 +2,7 @@
  * @file     gcc_arm.ld
  * @brief    GNU Linker Script for Cortex-R based device
  * @version  V1.0.1
- * @date     08. Aug 2019
+ * @date     05. September 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2019 Arm Limited. All rights reserved.
@@ -53,12 +53,12 @@ __RAM_SIZE = 0x00080000;
 __STACK_SIZE = 0x0001D000; /* Newlib allocates stack for each CPSR mode */
 __HEAP_SIZE  = 0x00000C00;
 
-/*--------------------- Hypervisor Stack Configuration -----------------------
-  <h> Hypervisor Stack Configuration
+/*--------------------- EL2 Stack Configuration -----------------------
+  <h> EL2 Stack Configuration
     <o0> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
   </h>
   -----------------------------------------------------------------------------*/
-__HYP_STACK_SIZE = 0x00000100;
+__EL2_STACK_SIZE = 0x00000100;
 
 
 /*
@@ -215,11 +215,11 @@ SECTIONS
     QUAD (__HeapTop)
     QUAD ((__HeapLimit - __HeapTop) / 8)
 
-    QUAD (__HypStackLimit)
-    QUAD ((__HypStackLimit - __HypStackTop) / 8)
-
     QUAD (__StackLimit)
     QUAD ((__StackLimit - __StackTop) / 8)
+
+    QUAD (__EL2StackLimit)
+    QUAD ((__EL2StackLimit - __EL2StackTop) / 8)
 
     __ecc_table_end__ = .;
   } > FLASH
@@ -332,7 +332,7 @@ SECTIONS
     __HeapLimit = .;
   } > RAM
 
-  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE - __HYP_STACK_SIZE) (COPY) :
+  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE - __EL2_STACK_SIZE) (COPY) :
   {
     . = ALIGN(8);
     __StackLimit = .;
@@ -341,19 +341,19 @@ SECTIONS
     __StackTop = .;
   } > RAM
 
-  /* Set Hypevisor stack top to end of RAM. Then set regular stack top,
+  /* Set EL2 stack top to end of RAM. Then set regular stack top,
    * and stack limit move down by size of __STACK_SIZE section */
-  .hyp_stack (ORIGIN(RAM) + LENGTH(RAM) - __HYP_STACK_SIZE) (COPY) :
+  .hyp_stack (ORIGIN(RAM) + LENGTH(RAM) - __EL2_STACK_SIZE) (COPY) :
   {
     . = ALIGN(8);
-    __HypStackLimit = .;
-    . = . + __HYP_STACK_SIZE;
+    __EL2StackLimit = .;
+    . = . + __EL2_STACK_SIZE;
     . = ALIGN(8);
-    __HypStackTop = .;
+    __EL2StackTop = .;
   } > RAM
 
   PROVIDE(__stack = __StackTop);
 
-  /* Check if data + heap + stack + hypstack exceeds RAM limit */
+  /* Check if data + heap + stack + ELstack exceeds RAM limit */
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }

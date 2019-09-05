@@ -3,7 +3,7 @@
  * @brief    CMSIS Core Peripheral Access Layer Header File for
  *           ARMCR52 Device
  * @version  V1.0.1
- * @date     08. Aug 2019
+ * @date     09. August 2019
  ******************************************************************************/
 /*
  * Copyright (c) 2019 Arm Limited. All rights reserved.
